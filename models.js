@@ -185,8 +185,9 @@ window.MODELS = [
             ['Zellenzahl', '6S = Funktion 4, Wert 1× lang'],
             ['Timing', 'Mittel 15° = Funktion 7, Wert 2× kurz (Werk)'],
             ['Abschaltung bei 6S', 'Mittel 3,0 V × 6 = 18,0 V (Werk)'],
+            ['BEC-Spannung', '7,4 V = Funktion 10, Wert 3× kurz'],
           ]},
-          { type: 'note', text: 'BEC-Spannung (Funktion 10, Werk 5 V) nach jedem Programmieren oder Reset prüfen. Muss zu Empfänger, Servos, T70 und DPSI passen (DPSI JR max. 7 V).' },
+          { type: 'note', text: 'BEC-Spannung nach jedem Programmieren oder Reset prüfen: Werkswert ist 5 V, eingestellt sind 7,4 V.' },
           { type: 'steps', title: 'Einschalten (normal)', items: [
             ['Sender ein', 'Gas ganz unten'],
             ['Antriebsakku anstecken', 'Melodie ♪123 = Versorgung ok'],
