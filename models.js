@@ -18,8 +18,8 @@ window.MODELS = [
     id: 'arcus-45',
     name: 'Arcus 4,48 m',
     maker: 'Tomahawk Aviation',
-    photo: 'img/arcus-45.png',
-    silhouette: true,   // Platzhalter-Umriss, wird im Kopf weiß dargestellt. Bei echtem Foto entfernen.
+    photo: 'img/arcus-45.jpg',   // D-KRPK über dem Wald
+    // silhouette: true  → nur für Umriss-Grafiken statt Foto (wird weiß eingefärbt)
     highlights: [
       ['Schwerpunkt', '55 mm'],
       ['Spannweite', '4,48 m'],
