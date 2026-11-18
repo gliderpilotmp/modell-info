@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#a8201a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Modell-Info">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>Modell-Info</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=Barlow:wght@400;500;600&display=swap">
+<style>
+/* Layout: fixer Kopf (Foto + Name) und fixes Kapitelmenü oben, darunter scrollt nur die gewählte Seite */
+:root{
+  --bg:#f7f3f2; --card:#ffffff; --fg:#2a1210; --muted:#7a5f5c; --line:#e7d9d7; --line2:#f1e7e5;
+  --accent:#b3261e; --accent-fg:#ffffff; --hero1:#c62828; --hero2:#6e0f0f;
+  --warn-bg:#fff4d6; --warn:#d99a00;
+  --f-ui:"Barlow",system-ui,-apple-system,sans-serif;
+  --f-head:"Barlow Condensed","Arial Narrow",system-ui,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#130c0b; --card:#1e1413; --fg:#f2e6e4; --muted:#b0918d; --line:#3a2725; --line2:#2a1c1b;
+  --accent:#ff6b5e; --accent-fg:#1a0b0a; --hero1:#8f1d1d; --hero2:#3a0a0a;
+  --warn-bg:#2f240d; --warn:#e0a100; color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-ui);font-size:16px;line-height:1.45;-webkit-tap-highlight-color:transparent;overflow:hidden}
+.app{height:100%;height:100dvh;display:flex;flex-direction:column}
+
+/* Kopf */
+.hero{flex:none;position:relative;background:linear-gradient(160deg,var(--hero1),var(--hero2));overflow:hidden;
+  height:calc(env(safe-area-inset-top,0px) + 132px);
+  padding:0 max(16px,env(safe-area-inset-right,0px)) 12px max(16px,env(safe-area-inset-left,0px));
+  display:flex;flex-direction:column;justify-content:flex-end}
+.hero .grid-bg{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.08) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px);background-size:20px 20px}
+.hero .pic{position:absolute;top:calc(env(safe-area-inset-top,0px) + 6px);bottom:6px;right:max(4px,env(safe-area-inset-right,0px));width:58%;background:right center/contain no-repeat}
+.hero .pic.silhouette{filter:invert(1);mix-blend-mode:screen;opacity:.9}
+.hero h1{position:relative;margin:0;color:#fff;font-family:var(--f-head);font-weight:700;font-size:32px;line-height:.95;text-wrap:balance;max-width:60%}
+.hero h1 small{display:block;font-size:12px;font-weight:600;letter-spacing:.14em;opacity:.85;text-transform:uppercase;margin-bottom:3px}
+.hero select{position:absolute;top:calc(env(safe-area-inset-top,0px) + 10px);left:max(12px,env(safe-area-inset-left,0px));
+  font:600 14px var(--f-ui);color:#fff;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:6px 10px}
+
+/* Kapitelmenü */
+nav.chips{flex:none;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;background:var(--bg);border-bottom:1px solid var(--line);
+  padding:8px max(10px,env(safe-area-inset-right,0px)) 8px max(10px,env(safe-area-inset-left,0px))}
+nav.chips a{display:block;text-align:center;text-decoration:none;color:var(--accent);border:1.5px solid var(--accent);border-radius:999px;
+  padding:7px 4px;font-weight:600;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+nav.chips a.on{background:var(--accent);color:var(--accent-fg)}
+
+/* Seite */
+main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain}
+.page{padding:14px max(12px,env(safe-area-inset-right,0px)) calc(28px + env(safe-area-inset-bottom,0px)) max(12px,env(safe-area-inset-left,0px));
+  display:grid;grid-template-columns:minmax(0,1fr);gap:14px;max-width:680px;margin:0 auto}
+.ph{margin:0 4px -4px;font-family:var(--f-head);font-size:26px;line-height:1.1}
+.ph small{display:block;font-family:var(--f-ui);font-size:13px;color:var(--muted);font-weight:500}
+
+.hl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.hl div{padding:10px 12px;border-right:1px solid var(--line2)}
+.hl div:last-child{border-right:0}
+.hl span{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.hl b{font-size:24px;font-variant-numeric:tabular-nums;font-family:var(--f-head);font-weight:700}
+
+.chap{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;color:inherit;text-decoration:none}
+.chap .t{min-width:0;flex:1}
+.chap .t b{display:block;font-family:var(--f-head);font-size:21px;line-height:1.1}
+.chap .t span{display:block;font-size:13px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chap .arr{color:var(--accent);font-size:24px;line-height:1}
+.chaps{display:grid;gap:8px}
+
+.block{display:grid;gap:6px;min-width:0}
+.block>h3,details.block>summary{margin:0 4px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+details.block>summary{cursor:pointer;list-style:none;display:flex;align-items:center;justify-content:space-between;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0}
+details.block>summary::-webkit-details-marker{display:none}
+details.block>summary::after{content:"+";font-size:20px;color:var(--accent);line-height:1}
+details.block[open]>summary::after{content:"−"}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.kv{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.25fr);margin:0}
+.kv dt,.kv dd{margin:0;padding:10px 14px;border-bottom:1px solid var(--line2)}
+.kv dt{color:var(--muted)}
+.kv dd{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}
+.kv dt:nth-last-child(2),.kv dd:last-child{border-bottom:0}
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+th,td{padding:9px 12px;text-align:left;border-bottom:1px solid var(--line2);vertical-align:top}
+th{font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--line2)}
+tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600;white-space:nowrap}
+td{font-variant-numeric:tabular-nums}
+.defl{padding:8px 14px 10px;display:grid;gap:2px}
+.defl .r{display:grid;grid-template-columns:96px minmax(0,1fr) 78px;align-items:center;gap:10px;padding:5px 0}
+.defl .r span small{display:block;font-size:11px;color:var(--muted);line-height:1.1}
+.defl .track{height:12px;background:var(--line2);border-radius:6px;position:relative}
+.defl .track i{position:absolute;top:0;bottom:0;background:var(--accent);border-radius:6px}
+.defl .track::after{content:"";position:absolute;left:50%;top:-4px;bottom:-4px;width:2px;background:var(--fg)}
+.defl b{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.defl .legend{display:grid;grid-template-columns:96px minmax(0,1fr) 78px;gap:10px;font-size:11px;color:var(--muted)}
+.defl .legend span:nth-child(2){display:flex;justify-content:space-between}
+.steps{list-style:none;margin:0;padding:2px 14px}
+.steps li{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line2)}
+.steps li:last-child{border-bottom:0}
+.steps li i{font-style:normal;flex:none;width:26px;height:26px;border-radius:6px;background:var(--accent);color:var(--accent-fg);display:grid;place-items:center;font-weight:600;font-size:14px}
+.steps li b{display:block}
+.steps li small{display:block;color:var(--muted);font-size:14px}
+.list{margin:0;padding:10px 14px 10px 32px}
+.list li{padding:3px 0}
+.txt{padding:12px 14px;margin:0}
+.note{background:var(--warn-bg);border-left:3px solid var(--warn);padding:10px 12px;border-radius:6px;font-size:15px}
+a:focus-visible,select:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+</style>
+</head>
+<body>
+<div class="app">
+  <header class="hero">
+    <div class="grid-bg"></div>
+    <div class="pic" id="pic"></div>
+    <h1 id="title"></h1>
+    <select id="model" aria-label="Modell wählen" hidden></select>
+  </header>
+  <nav class="chips" id="nav" aria-label="Kapitel"></nav>
+  <main id="main"></main>
+</div>
+
+<script src="models.js"></script>
+<script>
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store = { get(k){ try{return localStorage.getItem(k)}catch{return null} }, set(k,v){ try{localStorage.setItem(k,v)}catch{} } };
+let model = MODELS.find(m => m.id === store.get('model')) || MODELS[0];
+
+// Modellauswahl erscheint erst ab zwei Modellen
+const sel = document.getElementById('model');
+if (MODELS.length > 1) {
+  sel.hidden = false;
+  sel.innerHTML = MODELS.map(m => `<option value="${m.id}">${esc(m.name)}</option>`).join('');
+  sel.value = model.id;
+  sel.onchange = () => { model = MODELS.find(m => m.id === sel.value); store.set('model', model.id); location.hash = ''; render(); };
+}
+
+function inner(b){
+  switch (b.type) {
+    case 'kv':
+      return `<dl class="card kv">${b.items.map(([k,v]) => `<dt>${esc(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>`;
+    case 'table':
+      return `<div class="card tw"><table><thead><tr>${b.head.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${
+        b.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    case 'defl': {
+      const max = Math.max(...b.items.flatMap(d => [d.plus, d.minus]));
+      const rows = b.items.map(d => {
+        const l = 50 - d.minus / max * 50, r = 50 - d.plus / max * 50;
+        const val = d.plus === d.minus ? `± ${d.plus}` : `+${d.plus} / −${d.minus}`;
+        return `<div class="r"><span>${esc(d.name)}${d.hint ? `<small>${esc(d.hint)}</small>` : ''}</span><div class="track"><i style="left:${l}%;right:${r}%"></i></div><b>${val}</b></div>`;
+      }).join('');
+      return `<div class="card defl"><div class="legend"><span></span><span><span>− unten</span><span>oben +</span></span><span></span></div>${rows}</div>`;
+    }
+    case 'steps':
+      return `<ol class="card steps">${b.items.map((s,i) => {
+        const [a, d] = Array.isArray(s) ? s : [s, ''];
+        return `<li><i>${i+1}</i><span><b>${esc(a)}</b>${d ? `<small>${esc(d)}</small>` : ''}</span></li>`;
+      }).join('')}</ol>`;
+    case 'list':
+      return `<ul class="card list">${b.items.map(s => `<li>${esc(s)}</li>`).join('')}</ul>`;
+    case 'text':
+      return `<p class="card txt">${esc(b.text)}</p>`;
+  }
+  return '';
+}
+function block(b){
+  if (b.type === 'note') return `<div class="note">${esc(b.text)}</div>`;
+  if (b.collapsed && b.title) return `<details class="block"><summary>${esc(b.title)}</summary>${inner(b)}</details>`;
+  return `<div class="block">${b.title ? `<h3>${esc(b.title)}</h3>` : ''}${inner(b)}</div>`;
+}
+
+function render(){
+  const page = model.pages.find(p => p.id === location.hash.slice(1));
+  const pic = document.getElementById('pic');
+  pic.style.backgroundImage = `url('${model.photo}')`;
+  pic.classList.toggle('silhouette', !!model.silhouette);
+  document.getElementById('title').innerHTML = `<small>${esc(model.maker)}</small>${esc(model.name)}`;
+  document.title = page ? `${page.label} · ${model.name}` : model.name;
+
+  const tabs = [{ id: '', label: 'Übersicht' }, ...model.pages];
+  document.getElementById('nav').innerHTML = tabs.map(t =>
+    `<a href="#${t.id}" class="${t.id === (page ? page.id : '') ? 'on' : ''}"${t.id === (page ? page.id : '') ? ' aria-current="page"' : ''}>${esc(t.label)}</a>`).join('');
+
+  let html;
+  if (!page) {
+    html = (model.highlights ? `<div class="hl">${model.highlights.map(([k,v]) => `<div><span>${esc(k)}</span><b>${esc(v)}</b></div>`).join('')}</div>` : '')
+      + `<div class="chaps">${model.pages.map(p =>
+          `<a class="chap" href="#${p.id}"><span class="t"><b>${esc(p.label)}</b><span>${esc(p.sub || '')}</span></span><span class="arr">›</span></a>`).join('')}</div>`
+      + (model.overview || []).map(block).join('');
+  } else {
+    html = `<h2 class="ph">${esc(page.label)}${page.sub ? `<small>${esc(page.sub)}</small>` : ''}</h2>` + page.blocks.map(block).join('');
+  }
+  const main = document.getElementById('main');
+  main.innerHTML = `<div class="page">${html}</div>`;
+  main.scrollTop = 0;
+}
+window.addEventListener('hashchange', render);
+render();
+
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
+</script>
+</body>
+</html>
