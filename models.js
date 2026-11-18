@@ -11,7 +11,8 @@
 // `collapsed: true` an einem Block mit Titel: zugeklappt, erst beim Antippen sichtbar.
 //
 // Quellen Arcus: Anleitung Tomahawk Arcus V20260319, eigene Daten (Tomahawk Arcus.csv),
-// Testbericht AUFWIND 2/2026, Voltario T70 Anleitung (HEPF, FW 1.05).
+// Testbericht AUFWIND 2/2026, Voltario T70 Anleitung (HEPF, FW 1.05),
+// DPSI OCP Bedienungsanleitung V1.0 (EMCOTEC), KAVAN Plus R-120SB Bedienungsanleitung (KAVAN Wiki).
 
 window.MODELS = [
   {
@@ -120,43 +121,72 @@ window.MODELS = [
         ],
       },
       {
-        id: 'dpsi', label: 'DPSI', sub: 'DPSI OCP: Überstromschutz programmieren',
+        id: 'dpsi', label: 'DPSI', sub: 'EMCOTEC DPSI OCP: Überstromschutz je Servo',
         blocks: [
+          { type: 'text', text: 'Elektronische Sicherung zwischen Stromquelle (Empfänger, Akkuweiche) und Verbraucher (Servo). Lernt den Maximalstrom des Servos, schaltet bei Überstrom oder Kurzschluss ab und kappt Spannungsspitzen von Hochlastservos (Dynamoeffekt). Empfohlen für jedes Quer-, Höhen- und Seitenruderservo.' },
+          { type: 'note', text: 'JR-Version nur bis 7 V Betriebsspannung! Bei 2S-Versorgung (bis 8,4 V, z. B. Backup-Akku über T70 oder BEC auf 7,4/8,4 V) nur die MPX-Version (bis 12,6 V) verwenden.' },
           { type: 'steps', title: 'Maximalstrom einlernen', items: [
-            ['Anlage einschalten', 'rote + blaue LED blinken je 3× kurz'],
-            ['Taster gut 5 s halten', 'rote LED blitzt = Programmiermodus'],
-            ['Ruder rühren + Flug am Limit', 'Maximalstrom wird gelernt'],
-            ['Taster gut 5 s halten', 'rote LED 10 s ein = beendet'],
+            ['Anlage einschalten', 'rote + blaue LED blinken je 3× kurz (LED-Test)'],
+            ['Taster gut 5 s halten', 'rote LED blitzt regelmäßig = Programmiermodus'],
+            ['Knüppel rühren + Flug am Limit', 'große Ausschläge und Figuren, Maximalstrom wird gelernt'],
+            ['Taster gut 5 s halten', 'rote LED 10 s ein = Programmierung beendet'],
             ['Reaktivierung wählen', 'in den 10 s Taster kurz drücken = EIN, nicht drücken = AUS'],
+          ]},
+          { type: 'list', title: 'Gut zu wissen', items: [
+            'Abschaltschwelle = gelernter Maximalstrom + 50 %. Beispiel: Servo max. 2 A → Abschaltung bei 3 A.',
+            'Während der Programmierung schaltet er nur bei Kurzschluss (> 8 A) ab.',
+            'Ab Werk unprogrammiert und Reaktivierung aus.',
+            'Reaktivierung lässt sich nur zusammen mit dem Strom neu programmieren.',
           ]},
           { type: 'note', text: 'Neu programmieren nach jeder Änderung an Servo, Ruder oder Gestänge.' },
           { type: 'kv', title: 'Abschaltung', items: [
             ['Programmiert', '> 150 % Maximalstrom für 500 ms oder > 8 A für 16 ms'],
             ['Unprogrammiert', 'nur > 8 A für 16 ms'],
-            ['Mit Reaktivierung', 'nach 5 s wieder ein'],
+            ['Mit Reaktivierung', 'nach 5 s wieder ein (wiederholt sich)'],
             ['Ohne Reaktivierung', 'bleibt aus bis Anlage aus'],
           ]},
-          { type: 'kv', title: 'LED-Anzeige', items: [
-            ['Blau 2 s ein beim Einschalten', 'Reaktivierung aktiv'],
-            ['Blau 1× lang / 1× kurz', '1 A / 0,1 A, addieren (lang + 3× kurz = 1,3 A)'],
-            ['Rot aus', 'alles ok'],
-            ['Rot blinkt symmetrisch', 'Verbraucher abgeschaltet'],
-            ['Rot + Blau dauernd ein', 'Gerätefehler, einsenden'],
+          { type: 'table', title: 'LED-Anzeige', head: ['Rot', 'Blau', 'Bedeutung'], rows: [
+            ['3× kurz', '3× kurz', 'nach Einschalten: LED-Test'],
+            ['aus', '2 s ein', 'Reaktivierung aktiv'],
+            ['aus', 'aus', 'Reaktivierung gesperrt'],
+            ['blitzt', 'Strom', 'Programmiermodus'],
+            ['10 s ein', 'Strom', 'Programmierung beendet'],
+            ['aus', 'Strom', 'Betrieb: alles ok'],
+            ['blinkt gleichm.', 'Strom', 'Servo abgeschaltet'],
+            ['dauernd ein', 'dauernd ein', 'Gerätefehler, einsenden'],
           ]},
-          { type: 'kv', title: 'Einbau & Grenzen', items: [
-            ['Einbau', 'nahe an der Stromquelle, nicht am Servo'],
-            ['Spannung JR / MPX', 'max. 7 V / max. 12,6 V (3S)'],
-            ['Dauerstrom', 'max. 8 A'],
+          { type: 'kv', title: 'Stromanzeige blaue LED', items: [
+            ['1× lang (1 s)', '1 A'],
+            ['1× kurz (0,1 s)', '0,1 A'],
+            ['Beispiel', '1× lang + 3× kurz = 1,3 A'],
+            ['Wiederholung', 'nach ca. 4 s Dunkelphase'],
+          ]},
+          { type: 'list', title: 'Einbau', items: [
+            'Möglichst nahe an der Stromquelle: am Empfänger- bzw. Weichenausgang, nicht am Servo.',
+            'Mit Klett an Rumpfwand oder Spant befestigen; Stecker gegen Herausrutschen sichern.',
+            'Kabel fern von Servos und Gestängen verlegen, vor Nässe schützen.',
+          ]},
+          { type: 'table', title: 'Technische Daten', head: ['', 'JR', 'MPX'], rows: [
+            ['Betriebsspannung', '4,8–7,0 V', '4,8–12,6 V'],
+            ['Eingang max.', '7,5 V', '14 V'],
+            ['Spitzen gekappt ab', 'ca. 7,5 V', 'ca. 15 V'],
+            ['Dauerstrom', '8 A', '8 A'],
+            ['Eigenverbrauch', 'ca. 10 mA', 'ca. 10 mA'],
+            ['Maße', '70×17×4 mm', '74×17×7 mm'],
+            ['Gewicht', 'ca. 9 g', 'ca. 9 g'],
+            ['Betriebstemperatur', '−10 bis 70 °C', '−10 bis 70 °C'],
           ]},
         ],
       },
       {
-        id: 'esc', label: 'ESC', sub: 'KAVAN R-120SB: Einschalten, Kalibrieren, Programmieren',
+        id: 'esc', label: 'ESC', sub: 'KAVAN Plus R-120SB: Einschalten, Kalibrieren, Programmieren',
         blocks: [
           { type: 'kv', title: 'Meine Einstellung', items: [
             ['Zellenzahl', '6S = Funktion 4, Wert 1× lang'],
             ['Timing', 'Mittel 15° = Funktion 7, Wert 2× kurz (Werk)'],
+            ['Abschaltung bei 6S', 'Mittel 3,0 V × 6 = 18,0 V (Werk)'],
           ]},
+          { type: 'note', text: 'BEC-Spannung (Funktion 10, Werk 5 V) nach jedem Programmieren oder Reset prüfen. Muss zu Empfänger, Servos, T70 und DPSI passen (DPSI JR max. 7 V).' },
           { type: 'steps', title: 'Einschalten (normal)', items: [
             ['Sender ein', 'Gas ganz unten'],
             ['Antriebsakku anstecken', 'Melodie ♪123 = Versorgung ok'],
@@ -172,6 +202,7 @@ window.MODELS = [
             ['Kurze Pieptöne', 'Anzahl = LiPo-Zellenzahl'],
             ['Langer Piepton', 'Kalibrierung fertig'],
           ]},
+          { type: 'text', text: 'Kalibrieren beim ersten Einsatz und nach jedem Senderwechsel. Werks-Gasbereich 1100–1940 µs (Futaba-Standard).' },
           { type: 'steps', title: 'Programmieren mit Sender', items: [
             ['Sender ein', 'Gas auf Vollgas'],
             ['Antriebsakku anstecken', 'nach 2 s Ton B-B-'],
@@ -181,7 +212,7 @@ window.MODELS = [
             ['Melodie ♪1515', 'Wert gespeichert, zurück zur Funktionswahl'],
             ['Beenden', 'nach 2× lang + 2× kurz binnen 3 s Gas ganz unten'],
             ['Danach', 'Zellenzahl-Piepser + langer Ton, Gas unten lassen'],
-            ['Neustart', 'Akku ab- und wieder anstecken'],
+            ['Neustart', 'Akku ab- und wieder anstecken, sonst wirken die Werte nicht'],
           ]},
           { type: 'note', text: 'Zählregel: 1× lang = 5× kurz.' },
           { type: 'table', title: 'Funktionen (Beepfolge)', head: ['Beeps', 'Funktion'], rows: [
@@ -199,7 +230,8 @@ window.MODELS = [
             ['2L + 2k', '12 Beenden'],
           ]},
           { type: 'table', title: '1 Bremsart', collapsed: true, head: ['Beeps', 'Wert'], rows: [
-            ['1× kurz', 'Deaktiviert (Werk)'], ['2× kurz', 'Normal'], ['3× kurz', 'Umkehrbremse'], ['4× kurz', 'Lineare Umkehr'],
+            ['1× kurz', 'Deaktiviert (Werk)'], ['2× kurz', 'Normal: bremst bei Gas auf Minimum'],
+            ['3× kurz', 'Umkehrbremse (gelbes Kabel, Schalter)'], ['4× kurz', 'Lineare Umkehr (gelbes Kabel, Drehgeber)'],
           ]},
           { type: 'table', title: '2 Bremskraft', collapsed: true, head: ['Beeps', 'Wert'], rows: [
             ['1× kurz', 'Niedrig 60 % (Werk)'], ['2× kurz', 'Mittel 90 %'], ['3× kurz', 'Hoch 100 %'],
@@ -208,8 +240,8 @@ window.MODELS = [
             ['1× kurz', 'Weich: in 3 s auf 60 % (Werk)'], ['2× kurz', 'Hart: sofort aus'],
           ]},
           { type: 'table', title: '4 LiPo-Zellenzahl', collapsed: true, head: ['Beeps', 'Wert'], rows: [
-            ['1× kurz', 'Automatisch (Werk)'], ['2× kurz', '3S'], ['3× kurz', '4S'], ['4× kurz', '5S'],
-            ['1× lang', '6S'], ['1L + 1k', '7S'], ['1L + 2k', '8S'],
+            ['1× kurz', 'Automatisch (Werk, rechnet mit 3,7 V/Zelle)'], ['2× kurz', '3S'], ['3× kurz', '4S'], ['4× kurz', '5S'],
+            ['1× lang', '6S (manuell empfohlen)'], ['1L + 1k', '7S'], ['1L + 2k', '8S'],
           ]},
           { type: 'table', title: '5 Abschaltspannung', collapsed: true, head: ['Beeps', 'Wert'], rows: [
             ['1× kurz', 'Deaktiviert'], ['2× kurz', 'Niedrig 2,8 V/Zelle'], ['3× kurz', 'Mittel 3,0 V/Zelle (Werk)'], ['4× kurz', 'Hoch 3,4 V/Zelle'],
@@ -221,7 +253,7 @@ window.MODELS = [
             ['1× kurz', 'Niedrig 5°'], ['2× kurz', 'Mittel 15° (Werk)'], ['3× kurz', 'Hoch 25°'],
           ]},
           { type: 'table', title: '8 Aktiver Freilauf', collapsed: true, head: ['Beeps', 'Wert'], rows: [
-            ['1× kurz', 'Aktiviert (Werk)'], ['2× kurz', 'Deaktiviert'],
+            ['1× kurz', 'Aktiviert (Werk), gleichmäßigere Gasannahme'], ['2× kurz', 'Deaktiviert'],
           ]},
           { type: 'table', title: '9 Suchmodus', collapsed: true, head: ['Beeps', 'Wert'], rows: [
             ['1× kurz', 'Aus (Werk)'], ['2× kurz', '5 min'], ['3× kurz', '10 min'], ['4× kurz', '15 min'],
@@ -229,14 +261,32 @@ window.MODELS = [
           { type: 'table', title: '10 BEC-Spannung', collapsed: true, head: ['Beeps', 'Wert'], rows: [
             ['1× kurz', '5 V (Werk)'], ['2× kurz', '6 V'], ['3× kurz', '7,4 V'], ['4× kurz', '8,4 V'],
           ]},
-          { type: 'table', title: 'Warntöne', head: ['Ton / Symptom', 'Ursache'], rows: [
-            ['Kein Ton, Motor läuft nicht', 'Verbindung Akku–Regler fehlerhaft'],
-            ['BB, BB, BB … nach Einschalten', 'Eingangsspannung außerhalb 3–8S'],
-            ['B- B- B- … nach Einschalten', 'kein Gassignal oder Gas nicht ganz unten'],
-            ['B- B- B- … nach Kalibrierung', 'Gasweg zu klein'],
-            ['60 % Leistung + BB, BB … nach Flug', 'Überhitzungsschutz (120 °C)'],
-            ['60 % Leistung + BBB, BBB … nach Flug', 'Unterspannungsschutz'],
-            ['Motor aus im Flug', 'Signalverlust > 0,25 s oder Überlast'],
+          { type: 'table', title: 'Warntöne & Abhilfe', head: ['Ton / Symptom', 'Ursache → Abhilfe'], rows: [
+            ['Kein Ton, Motor läuft nicht', 'Verbindung Akku–Regler → Stecker prüfen/tauschen'],
+            ['BB, BB, BB … nach Einschalten', 'Akkuspannung außerhalb 3–8S → passenden Akku verwenden'],
+            ['B- B- B- … nach Einschalten', 'kein Gassignal → Bindung und Kabel zum Empfänger prüfen'],
+            ['B- B- B- … nach Einschalten', 'Gas nicht ganz unten → Gas auf Minimum, ggf. kalibrieren'],
+            ['B- B- B- … nach Kalibrierung', 'Gasweg zu klein → Weg am Sender vergrößern, neu kalibrieren'],
+            ['60 % Leistung, danach BB, BB …', 'Überhitzung (> 120 °C) → Kühlung verbessern, Last senken'],
+            ['60 % Leistung, danach BBB, BBB …', 'Unterspannung → anderer Akku oder Abschaltspannung senken'],
+            ['Motor aus im Flug', 'Gassignal > 0,25 s weg oder Überlast (z. B. blockierte Luftschraube)'],
+          ]},
+          { type: 'list', title: 'Schutzfunktionen', collapsed: true, items: [
+            'Anlaufschutz: Bei Gas unter 15 % startet er selbst neu; über 20 % erst Gas ganz zurück, dann neu starten.',
+            'Signalverlust: Ausgang sofort aus, läuft bei gültigem Signal wieder an.',
+            'Überlast: schaltet ab oder startet neu (blockierte Luftschraube, Synchronverlust).',
+            'Überhitzung > 120 °C: weich auf ca. 60 %, bei harter Abschaltung sofort aus.',
+          ]},
+          { type: 'kv', title: 'Anschlüsse', collapsed: true, items: [
+            ['Langes Kabel weiß/rot/schwarz', 'Gaskanal; Rot/Schwarz = BEC-Versorgung'],
+            ['Gelbes Kabel', 'Umkehrsignal, freier Kanal (nur für Umkehrbremse)'],
+            ['Kurzes Kabel weiß/rot/schwarz', 'Programmierkarte KAVAN PRO'],
+          ]},
+          { type: 'list', title: 'Sicherheit', items: [
+            'Akku erst direkt vor dem Flug anstecken und nach jedem Einsatz abstecken (Regler zieht sonst Strom).',
+            'Erst Sender ein, Gas auf Minimum, dann Akku. Sender nie ausschalten, solange der Akku dran ist.',
+            'Mit angestecktem Akku so handeln, als könnte der Motor jederzeit anlaufen.',
+            'Polarität prüfen: Rot +, Schwarz −. Verpolung zerstört den Regler.',
           ]},
           { type: 'kv', title: 'Technische Daten', collapsed: true, items: [
             ['Dauerstrom', '120 A'],
