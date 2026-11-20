@@ -110,18 +110,18 @@ window.MODELS = [
             { name: 'Inneres QR', up: 32, down: 10, hint: 'innen gemessen' },
             { name: 'Äußeres QR', up: 23, down: 10, hint: 'innen gemessen' },
           ]},
-          { type: 'defl', title: 'Querruderausschläge · mm', items: [
+          { type: 'defl', title: 'Querruderausschläge · mm, − oben / + unten', items: [
             { name: 'Wölbklappe', up: 9, down: 6 },
             { name: 'Inneres QR', up: 22, down: 10 },
             { name: 'Äußeres QR', up: 23, down: 9 },
           ]},
-          { type: 'kv', title: 'Butterfly', items: [
+          { type: 'kv', title: 'Butterfly · − oben / + unten', items: [
             ['Wölbklappe', '+55 mm'],
             ['Inneres QR', '−28 mm'],
             ['Äußeres QR', 'neutral'],
             ['Höhenruder', '+2 mm'],
           ]},
-          { type: 'table', title: 'Flugphasen · mm', head: ['Phase', 'WK', 'inn. QR', 'äuß. QR'], rows: [
+          { type: 'table', title: 'Flugphasen · mm, − oben / + unten', head: ['Phase', 'WK', 'inn. QR', 'äuß. QR'], rows: [
             ['Gleiten', '+5', '+3', 'neutral'],
             ['Thermik & Start', '+8', '+6', 'neutral'],
             ['Speed', 'neutral', 'neutral', 'neutral'],
