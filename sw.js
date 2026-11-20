@@ -1,7 +1,7 @@
 // Offline-Cache. Bei jeder Änderung VERSION erhöhen, damit Handys die neue Version laden.
-const VERSION = '1.9';
+const VERSION = '2.0';
 const CACHE = 'modell-info-v' + VERSION;
-const ASSETS = ['./', './index.html', './models.js', './manifest.json', './icon-192.png', './icon-512.png', './img/arcus-45.jpg'];
+const ASSETS = ['./', './index.html', './models.js', './manifest.json', './mi-icon-192.png', './mi-icon-512.png', './mi-apple-180.png', './img/arcus-45.jpg'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
