@@ -127,11 +127,13 @@ window.MODELS = [
           { type: 'kv', title: 'Meine Lösung', items: [
             ['DPSI-Version', 'JR (Betrieb 4,8–7,0 V)'],
             ['Versorgung', 'KAVAN-BEC 7,4 V'],
-            ['Spannung senken', '1 Diode vor jedem DPSI (3 Stück)'],
+            ['Spannung senken', '1N5401 (3 A, 100 V) vor jedem DPSI (3 Stück)'],
+            ['Diode einbauen', 'nur im Plus-Kabel (rot), Ring zeigt zum DPSI'],
             ['Reihenfolge', 'Empfänger → Diode → DPSI → Servo'],
             ['Ziel am DPSI', 'unter 7,0 V'],
           ]},
-          { type: 'note', text: 'Nach dem Einbau Spannung hinter der Diode messen, auch unter Last (Ruder bewegen): muss unter 7,0 V liegen. Silizium-Diode senkt ca. 0,6–0,8 V (→ ca. 6,6–6,8 V); eine Schottky-Diode senkt nur ca. 0,3–0,4 V und reicht nicht. Die Diode muss den Servostrom aushalten.' },
+          { type: 'note', text: 'Die 1N5401 senkt je nach Strom ca. 0,7–1,0 V: aus 7,4 V werden ca. 6,4–6,7 V. Nach dem Einbau trotzdem hinter der Diode messen, auch unter Last (Ruder bewegen): muss unter 7,0 V liegen. Diode falsch herum = Servo ohne Strom.' },
+          { type: 'note', text: 'Die Diode hält 3 A dauernd. Beim Einlernen schaltet das DPSI erst über 8 A ab: Ruder dabei nicht lange blockieren.' },
           { type: 'note', text: 'Schaltet das T70 auf einen 2S-LiPo/Li-Ion-Backup (voll 8,4 V), kommen hinter der Diode noch ca. 7,7 V an – zu viel für die JR-Version.' },
           { type: 'steps', title: 'Maximalstrom einlernen', items: [
             ['Anlage einschalten', 'rote + blaue LED blinken je 3× kurz (LED-Test)'],
