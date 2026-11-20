@@ -1,5 +1,5 @@
 // Offline-Cache. Bei jeder Änderung VERSION erhöhen, damit Handys die neue Version laden.
-const VERSION = '1.8';
+const VERSION = '1.9';
 const CACHE = 'modell-info-v' + VERSION;
 const ASSETS = ['./', './index.html', './models.js', './manifest.json', './icon-192.png', './icon-512.png', './img/arcus-45.jpg'];
 

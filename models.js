@@ -42,6 +42,7 @@ window.MODELS = [
       { type: 'table', title: 'Checkliste · Aufbau', head: ['Teil', 'Aktion'], rows: [
         ['Backupakku', 'anschließen und on'],
         ['Fahrwerk', 'ein'],
+        ['Alle Ruder + Fahrwerk', 'einmal bewegen, Funktion prüfen'],
       ]},
     ],
 
@@ -59,6 +60,13 @@ window.MODELS = [
             ['Rumpf', 'GFK/CFK'],
             ['Tragflächen', 'CFK mit GFK-Überzug'],
             ['Klappen', '6 (Tiplets optional separat)'],
+          ]},
+          { type: 'kv', title: 'Fahrwerk', items: [
+            ['Einziehfahrwerk', 'Fema Carbon S 1:4,5'],
+            ['Rad', '82 mm'],
+            ['Servo', 'DSSERVO DS4125 Digital Metal, Low Profile'],
+            ['Servo-Daten', '29 kg / 0,15 s bei 7,4 V, Betrieb 4,8–7,4 V'],
+            ['Versorgung', '2× 1N5401 hintereinander, kein DPSI'],
           ]},
           { type: 'kv', title: 'Antrieb · Leopard LC5065', items: [
             ['Motor', 'Leopard LC5065 14-pol, Glider-Adapter'],
@@ -118,6 +126,13 @@ window.MODELS = [
             ['Speed', 'neutral', 'neutral', 'neutral'],
           ]},
           { type: 'note', text: 'Laut Hersteller gibt es keine eigene Normal-Phase: alle Klappen neutral = Speed.' },
+          { type: 'steps', title: 'Fahrwerk · Endpunkte einstellen', items: [
+            ['Fahrwerk ein- und ausfahren', 'Servoweg am Sender so weit, dass beide Endlagen sicher erreicht werden'],
+            ['In jeder Endlage hinhören', 'Brummt das Servo, drückt es gegen den Anschlag: Weg zurücknehmen'],
+            ['Strom messen', 'Zangenamperemeter: in beiden Endlagen fast kein Strom'],
+            ['Nach Änderungen wiederholen', 'nach Reparatur, Gestängetausch oder neuem Servo'],
+          ]},
+          { type: 'note', text: 'Ein Fahrwerksservo, das in der Endlage drückt, zieht dauerhaft ca. 2–3 A (typischer Wert, kein Herstellerwert): wird heiß, leert den Backup-Akku und überlastet die 3-A-Dioden.' },
         ],
       },
       {
@@ -132,6 +147,16 @@ window.MODELS = [
             ['Reihenfolge', 'Empfänger → Diode → Diode → DPSI → Servo'],
             ['Am DPSI mit BEC', 'ca. 5,6–6,0 V'],
             ['Am DPSI mit Backup', 'ca. 6,4–7,0 V'],
+            ['Fahrwerksservo', 'DS4125 (max. 7,4 V), ohne DPSI, ebenfalls 2× 1N5401'],
+          ]},
+          { type: 'table', title: 'Wenn eine Diode ausfällt', head: ['Defekt', 'Folge'], rows: [
+            ['Unterbrochen (häufiger)', 'Servo ohne Strom: Ruder tot bzw. Fahrwerk bleibt stehen'],
+            ['Kurzschluss', 'Servo läuft weiter, etwas mehr Spannung'],
+          ]},
+          { type: 'list', title: 'Ausfall vermeiden', items: [
+            'Sauber verlöten, Schrumpfschlauch, Beinchen nicht direkt am Diodenkörper biegen, Kabel mit Zugentlastung.',
+            'Fahrwerk-Endpunkte so einstellen, dass das Servo nie gegen den Anschlag drückt (siehe Settings).',
+            'Vor jedem Flug alle Ruder und das Fahrwerk bewegen: eine unterbrochene Diode fällt so am Boden auf.',
           ]},
           { type: 'note', text: 'Nach dem Einbau hinter den Dioden messen, auch unter Last (Ruder bewegen): mit BEC unter 7,0 V. Zusätzlich einmal mit vollem Backup-Akku messen (BEC aus, nur T70-Backup). Diode falsch herum = Servo ohne Strom.' },
           { type: 'note', text: 'Die Dioden halten 3 A dauernd. Beim Einlernen schaltet das DPSI erst über 8 A ab: Ruder dabei nicht lange blockieren.' },
