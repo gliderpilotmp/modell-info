@@ -2,7 +2,7 @@
 //
 // Seiten (pages) bestehen aus Blöcken:
 //   { type: 'kv',    title?, items: [['Bezeichnung', 'Wert'], ...] }        Wertetabelle
-//   { type: 'defl',  title?, items: [{ name, plus, minus, hint? }] }         Ruderausschläge als Balken (mm, + oben / − unten)
+//   { type: 'defl',  title?, items: [{ name, up, down, hint? }] }            Ruderausschläge als Balken in mm, Anzeige wie im Großflug: − oben / + unten
 //   { type: 'table', title?, head: [...], rows: [[...], ...] }               Tabelle mit mehreren Spalten
 //   { type: 'steps', title?, items: ['Text' | ['Aktion', 'Detail'], ...] }   nummerierte Anleitung
 //   { type: 'list',  title?, items: ['Punkt', ...] }                         Aufzählung
@@ -102,27 +102,28 @@ window.MODELS = [
             ['Schwerpunkt', '55 mm'],
           ]},
           { type: 'note', text: 'Testbericht: Für den Erstflug Schwerpunkt eher etwas weiter vorne, dann erfliegen. Akku so weit vorne wie möglich.' },
-          { type: 'defl', title: 'Servowege (benötigt) · mm, + oben / − unten', items: [
-            { name: 'Höhe', plus: 11, minus: 8, hint: 'mittig gemessen' },
-            { name: 'Seite', plus: 45, minus: 45 },
-            { name: 'Wölbklappe', plus: 9, minus: 55, hint: 'innen gemessen' },
-            { name: 'Inneres QR', plus: 32, minus: 10, hint: 'innen gemessen' },
-            { name: 'Äußeres QR', plus: 23, minus: 10, hint: 'innen gemessen' },
+          { type: 'note', text: 'Vorzeichen wie im Großflug: − nach oben, + nach unten. Die Tomahawk-Anleitung verwendet es umgekehrt (+ oben / − unten).' },
+          { type: 'defl', title: 'Servowege (benötigt) · mm, − oben / + unten', items: [
+            { name: 'Höhe', up: 11, down: 8, hint: 'mittig gemessen' },
+            { name: 'Seite', up: 45, down: 45 },
+            { name: 'Wölbklappe', up: 9, down: 55, hint: 'innen gemessen' },
+            { name: 'Inneres QR', up: 32, down: 10, hint: 'innen gemessen' },
+            { name: 'Äußeres QR', up: 23, down: 10, hint: 'innen gemessen' },
           ]},
           { type: 'defl', title: 'Querruderausschläge · mm', items: [
-            { name: 'Wölbklappe', plus: 9, minus: 6 },
-            { name: 'Inneres QR', plus: 22, minus: 10 },
-            { name: 'Äußeres QR', plus: 23, minus: 9 },
+            { name: 'Wölbklappe', up: 9, down: 6 },
+            { name: 'Inneres QR', up: 22, down: 10 },
+            { name: 'Äußeres QR', up: 23, down: 9 },
           ]},
           { type: 'kv', title: 'Butterfly', items: [
-            ['Wölbklappe', '−55 mm'],
-            ['Inneres QR', '+28 mm'],
+            ['Wölbklappe', '+55 mm'],
+            ['Inneres QR', '−28 mm'],
             ['Äußeres QR', 'neutral'],
-            ['Höhenruder', '−2 mm'],
+            ['Höhenruder', '+2 mm'],
           ]},
           { type: 'table', title: 'Flugphasen · mm', head: ['Phase', 'WK', 'inn. QR', 'äuß. QR'], rows: [
-            ['Gleiten', '−5', '−3', 'neutral'],
-            ['Thermik & Start', '−8', '−6', 'neutral'],
+            ['Gleiten', '+5', '+3', 'neutral'],
+            ['Thermik & Start', '+8', '+6', 'neutral'],
             ['Speed', 'neutral', 'neutral', 'neutral'],
           ]},
           { type: 'note', text: 'Laut Hersteller gibt es keine eigene Normal-Phase: alle Klappen neutral = Speed.' },

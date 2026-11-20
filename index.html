@@ -149,13 +149,14 @@ function inner(b){
       return `<div class="card tw"><table><thead><tr>${b.head.map(h => `<th>${esc(h)}</th>`).join('')}</tr></thead><tbody>${
         b.rows.map(r => `<tr>${r.map(c => `<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
     case 'defl': {
-      const max = Math.max(...b.items.flatMap(d => [d.plus, d.minus]));
+      // Großflug-Konvention: nach oben = −, nach unten = +. Balken: links oben, rechts unten.
+      const max = Math.max(...b.items.flatMap(d => [d.up, d.down]));
       const rows = b.items.map(d => {
-        const l = 50 - d.minus / max * 50, r = 50 - d.plus / max * 50;
-        const val = d.plus === d.minus ? `± ${d.plus}` : `+${d.plus} / −${d.minus}`;
+        const l = 50 - d.up / max * 50, r = 50 - d.down / max * 50;
+        const val = d.up === d.down ? `± ${d.up}` : `−${d.up} / +${d.down}`;
         return `<div class="r"><span>${esc(d.name)}${d.hint ? `<small>${esc(d.hint)}</small>` : ''}</span><div class="track"><i style="left:${l}%;right:${r}%"></i></div><b>${val}</b></div>`;
       }).join('');
-      return `<div class="card defl"><div class="legend"><span></span><span><span>− unten</span><span>oben +</span></span><span></span></div>${rows}</div>`;
+      return `<div class="card defl"><div class="legend"><span></span><span><span>− oben</span><span>unten +</span></span><span></span></div>${rows}</div>`;
     }
     case 'steps':
       return `<ol class="card steps">${b.items.map((s,i) => {
