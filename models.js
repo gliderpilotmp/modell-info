@@ -126,7 +126,7 @@ window.MODELS = [
           { type: 'text', text: 'Elektronische Sicherung zwischen Stromquelle (Empfänger, Akkuweiche) und Verbraucher (Servo). Lernt den Maximalstrom des Servos, schaltet bei Überstrom oder Kurzschluss ab und kappt Spannungsspitzen von Hochlastservos (Dynamoeffekt). Empfohlen für jedes Quer-, Höhen- und Seitenruderservo.' },
           { type: 'kv', title: 'Meine Lösung', items: [
             ['DPSI-Version', 'JR (Betrieb 4,8–7,0 V)'],
-            ['Versorgung', 'KAVAN-BEC 7,4 V'],
+            ['Versorgung', 'KAVAN-BEC 7,4 V, Backup 2S Li-Ion über T70'],
             ['Spannung senken', '1N5401 (3 A, 100 V) vor jedem DPSI (3 Stück)'],
             ['Diode einbauen', 'nur im Plus-Kabel (rot), Ring zeigt zum DPSI'],
             ['Reihenfolge', 'Empfänger → Diode → DPSI → Servo'],
@@ -134,7 +134,12 @@ window.MODELS = [
           ]},
           { type: 'note', text: 'Die 1N5401 senkt je nach Strom ca. 0,7–1,0 V: aus 7,4 V werden ca. 6,4–6,7 V. Nach dem Einbau trotzdem hinter der Diode messen, auch unter Last (Ruder bewegen): muss unter 7,0 V liegen. Diode falsch herum = Servo ohne Strom.' },
           { type: 'note', text: 'Die Diode hält 3 A dauernd. Beim Einlernen schaltet das DPSI erst über 8 A ab: Ruder dabei nicht lange blockieren.' },
-          { type: 'note', text: 'Schaltet das T70 auf einen 2S-LiPo/Li-Ion-Backup (voll 8,4 V), kommen hinter der Diode noch ca. 7,7 V an – zu viel für die JR-Version.' },
+          { type: 'note', text: 'Offen: Backup ist ein 2S Li-Ion (voll 8,4 V). Schaltet das T70 auf den Backup, kommen hinter der 1N5401 noch ca. 7,4–7,7 V an. Das ist über dem Bereich der JR-Version (max. 7,0 V Betrieb, 7,5 V Eingang).' },
+          { type: 'table', title: 'Lösungen für den Backup-Fall', head: ['Lösung', 'Am DPSI (BEC / Backup)'], rows: [
+            ['2 Dioden hintereinander', 'ca. 5,6–6,0 V / 6,4–7,0 V'],
+            ['Backup 2S LiFe statt Li-Ion', 'ca. 6,4–6,7 V / 6,2–6,5 V'],
+            ['DPSI MPX statt JR, keine Diode', '7,4 V / bis 8,4 V'],
+          ]},
           { type: 'steps', title: 'Maximalstrom einlernen', items: [
             ['Anlage einschalten', 'rote + blaue LED blinken je 3× kurz (LED-Test)'],
             ['Taster gut 5 s halten', 'rote LED blitzt regelmäßig = Programmiermodus'],
