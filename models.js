@@ -124,7 +124,15 @@ window.MODELS = [
         id: 'dpsi', label: 'DPSI', sub: 'EMCOTEC DPSI OCP: Überstromschutz je Servo',
         blocks: [
           { type: 'text', text: 'Elektronische Sicherung zwischen Stromquelle (Empfänger, Akkuweiche) und Verbraucher (Servo). Lernt den Maximalstrom des Servos, schaltet bei Überstrom oder Kurzschluss ab und kappt Spannungsspitzen von Hochlastservos (Dynamoeffekt). Empfohlen für jedes Quer-, Höhen- und Seitenruderservo.' },
-          { type: 'note', text: 'JR-Version nur bis 7 V Betriebsspannung! Bei 2S-Versorgung (bis 8,4 V, z. B. Backup-Akku über T70 oder BEC auf 7,4/8,4 V) nur die MPX-Version (bis 12,6 V) verwenden.' },
+          { type: 'kv', title: 'Meine Lösung', items: [
+            ['DPSI-Version', 'JR (Betrieb 4,8–7,0 V)'],
+            ['Versorgung', 'KAVAN-BEC 7,4 V'],
+            ['Spannung senken', '1 Diode vor jedem DPSI (3 Stück)'],
+            ['Reihenfolge', 'Empfänger → Diode → DPSI → Servo'],
+            ['Ziel am DPSI', 'unter 7,0 V'],
+          ]},
+          { type: 'note', text: 'Nach dem Einbau Spannung hinter der Diode messen, auch unter Last (Ruder bewegen): muss unter 7,0 V liegen. Silizium-Diode senkt ca. 0,6–0,8 V (→ ca. 6,6–6,8 V); eine Schottky-Diode senkt nur ca. 0,3–0,4 V und reicht nicht. Die Diode muss den Servostrom aushalten.' },
+          { type: 'note', text: 'Schaltet das T70 auf einen 2S-LiPo/Li-Ion-Backup (voll 8,4 V), kommen hinter der Diode noch ca. 7,7 V an – zu viel für die JR-Version.' },
           { type: 'steps', title: 'Maximalstrom einlernen', items: [
             ['Anlage einschalten', 'rote + blaue LED blinken je 3× kurz (LED-Test)'],
             ['Taster gut 5 s halten', 'rote LED blitzt regelmäßig = Programmiermodus'],
@@ -162,7 +170,7 @@ window.MODELS = [
             ['Wiederholung', 'nach ca. 4 s Dunkelphase'],
           ]},
           { type: 'list', title: 'Einbau', items: [
-            'Möglichst nahe an der Stromquelle: am Empfänger- bzw. Weichenausgang, nicht am Servo.',
+            'Möglichst nahe an der Stromquelle: am Empfänger- bzw. Weichenausgang, nicht am Servo. Diode direkt davor.',
             'Mit Klett an Rumpfwand oder Spant befestigen; Stecker gegen Herausrutschen sichern.',
             'Kabel fern von Servos und Gestängen verlegen, vor Nässe schützen.',
           ]},
